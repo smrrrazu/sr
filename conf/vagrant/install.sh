@@ -4,23 +4,23 @@
 export LC_ALL=en_US.UTF-8
 export LANG=en_US.UTF-8
 
-# Variables
-DB_PWD=""
+# # Variables
+# DB_PWD=""
 
-echo -e "\n--- Updating package list ---\n"
-apt-get -qq update
+# echo -e "\n--- Updating package list ---\n"
+# apt-get -qq update
 
-echo -e "\n--- Installing Apache, MySQL and phpMyAdmin ---\n"
-# Unattended install for MySQL
-export DEBIAN_FRONTEND="noninteractive"
-# Unattended install for phpMyAdmin
-echo "phpmyadmin phpmyadmin/dbconfig-install boolean true" | debconf-set-selections
-echo "phpmyadmin phpmyadmin/app-password-confirm password $DB_PWD" | debconf-set-selections
-echo "phpmyadmin phpmyadmin/mysql/admin-pass password $DB_PWD" | debconf-set-selections
-echo "phpmyadmin phpmyadmin/mysql/app-pass password $DB_PWD" | debconf-set-selections
-echo "phpmyadmin phpmyadmin/reconfigure-webserver multiselect apache2" | debconf-set-selections
-apt-get install -y apache2 mysql-server-5.6 phpmyadmin
-php5enmod mcrypt
+# echo -e "\n--- Installing Apache, MySQL and phpMyAdmin ---\n"
+# # Unattended install for MySQL
+# export DEBIAN_FRONTEND="noninteractive"
+# # Unattended install for phpMyAdmin
+# echo "phpmyadmin phpmyadmin/dbconfig-install boolean true" | debconf-set-selections
+# echo "phpmyadmin phpmyadmin/app-password-confirm password $DB_PWD" | debconf-set-selections
+# echo "phpmyadmin phpmyadmin/mysql/admin-pass password $DB_PWD" | debconf-set-selections
+# echo "phpmyadmin phpmyadmin/mysql/app-pass password $DB_PWD" | debconf-set-selections
+# echo "phpmyadmin phpmyadmin/reconfigure-webserver multiselect apache2" | debconf-set-selections
+# apt-get install -y apache2 mysql-server-5.6 phpmyadmin
+# php5enmod mcrypt
 
 # If symlink does not exist, create a dir /var/www/domains/ and a symlink to /sr/ dir
 if ! [ -L /var/www/domains/sr ]; then 
@@ -39,7 +39,7 @@ pip3 install --upgrade pip
 pip3 install invoke
 
 # Open project directory
-cd /vagrant
+cd /var/www/domains/sr
 
 # Copy mysql config file
 cp -n /var/www/domains/sr/conf/mysql/my.cnf /home/vagrant/.my.cnf
@@ -47,6 +47,17 @@ cp -n /var/www/domains/sr/conf/mysql/my.cnf /root/.my.cnf
 
 # Create logs folder
 mkdir -p /vagrant/sr/logs/
+
+# Install virtualenv
+pip install virtualenv
+
+# Create virtualenv
+virtualenv --always-copy venv
+# Activate virtualenv
+. venv/bin/activate
+
+# Install pip install -r /path/to/requirements.txt
+pip install -r requirements.txt
 
 # # Create a symlink local settings to vagrant specific setting
 # cd /vagrant/sr
