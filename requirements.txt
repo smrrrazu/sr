@@ -1,3 +1,5 @@
 Django==1.9
 Pillow==3.1.0
 wheel==0.24.0
+mod_wsgi
+mysqlclient

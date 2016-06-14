@@ -59,6 +59,18 @@ virtualenv --always-copy venv
 # Install pip install -r /path/to/requirements.txt
 pip install -r requirements.txt
 
+
+# Create mysql database
+mysql -uroot -e "create database sr"
+
+sudo apt-get install libmysqlclient-dev
+
+# Dependency for mysqlclient
+sudo apt-get install libapache2-mod-wsgi-py3
+
+# Install mysqlclient
+pip install mysqlclient
+
 # # Create a symlink local settings to vagrant specific setting
 # cd /vagrant/sr
 # if ! [ -L local_settings.py ]; then
