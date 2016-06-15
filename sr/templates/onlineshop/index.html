@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block content %}
+
+    {% if categories %}
+    <ul>
+    {% for category in categories %}
+        <li><a href="/onlineshop/{{ category.id }}/">{{ category.name }}</a></li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>No categories are available.</p>
+{% endif %}
+
+    <div ng-app ng-init="categories=['mobile', 'laptop', 'pc']">
+      <label>Name:</label>
+      <input type="text" ng-model="yourName" placeholder="Enter a name here">
+      <hr>
+      {% verbatim %} 
+        <h1>Hello {{yourName}}!</h1>
+        <ul>
+            <li ng-repeat=" cat in categories">{{cat}}</li>
+        </ul>
+      {% endverbatim %}
+
+        
+      
+    </div>
+
+
+
+    
+{% endblock content %}
+
+
+
