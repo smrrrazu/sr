@@ -42,23 +42,6 @@ class Post(models.Model):
        return reverse("posts:detail", kwargs={"id": self.id})
 
 
-   
-
-class QualityManagerSchedule(models.Model):
-
-    quality_managers = models.ManyToManyField(User, verbose_name='Quality managers', related_name='QM_schedule')
-    year             = models.PositiveSmallIntegerField(verbose_name='Year')
-    week             = models.PositiveSmallIntegerField(verbose_name='Week')
-
-    class Meta:
-        unique_together = ('year', 'week',)
-
-    def get_qm_initials(self):
-        return [ qm.upper() for qm in self.quality_managers.values_list('username', flat=True) ]
-    
-    def __str__(self):
-        return "%s-%s %s" % (self.year, self.week, ', '.join(self.get_qm_initials()))
-
 class Blog(models.Model):
     name = models.CharField(max_length=100)
     tagline = models.TextField()
