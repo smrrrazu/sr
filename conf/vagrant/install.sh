@@ -4,23 +4,23 @@
 export LC_ALL=en_US.UTF-8
 export LANG=en_US.UTF-8
 
-# # Variables
-# DB_PWD=""
+# Variables
+DB_PWD=""
 
-# echo -e "\n--- Updating package list ---\n"
-# apt-get -qq update
+echo -e "\n--- Updating package list ---\n"
+apt-get -qq update
 
-# echo -e "\n--- Installing Apache, MySQL and phpMyAdmin ---\n"
-# # Unattended install for MySQL
-# export DEBIAN_FRONTEND="noninteractive"
-# # Unattended install for phpMyAdmin
-# echo "phpmyadmin phpmyadmin/dbconfig-install boolean true" | debconf-set-selections
-# echo "phpmyadmin phpmyadmin/app-password-confirm password $DB_PWD" | debconf-set-selections
-# echo "phpmyadmin phpmyadmin/mysql/admin-pass password $DB_PWD" | debconf-set-selections
-# echo "phpmyadmin phpmyadmin/mysql/app-pass password $DB_PWD" | debconf-set-selections
-# echo "phpmyadmin phpmyadmin/reconfigure-webserver multiselect apache2" | debconf-set-selections
-# apt-get install -y apache2 mysql-server-5.6 phpmyadmin
-# php5enmod mcrypt
+echo -e "\n--- Installing Apache, MySQL and phpMyAdmin ---\n"
+# Unattended install for MySQL
+export DEBIAN_FRONTEND="noninteractive"
+# Unattended install for phpMyAdmin
+echo "phpmyadmin phpmyadmin/dbconfig-install boolean true" | debconf-set-selections
+echo "phpmyadmin phpmyadmin/app-password-confirm password $DB_PWD" | debconf-set-selections
+echo "phpmyadmin phpmyadmin/mysql/admin-pass password $DB_PWD" | debconf-set-selections
+echo "phpmyadmin phpmyadmin/mysql/app-pass password $DB_PWD" | debconf-set-selections
+echo "phpmyadmin phpmyadmin/reconfigure-webserver multiselect apache2" | debconf-set-selections
+apt-get install -y apache2 mysql-server-5.6 phpmyadmin
+php5enmod mcrypt
 
 # If symlink does not exist, create a dir /var/www/domains/ and a symlink to /sr/ dir
 if ! [ -L /var/www/domains/sr ]; then 
@@ -36,7 +36,7 @@ apt-get install -y python3-pip
 pip3 install --upgrade pip
 
 # Install Invoke - Pythonic task execution tool
-pip3 install invoke
+pip3 install invoke==0.10.1
 
 # Open project directory
 cd /var/www/domains/sr
@@ -48,28 +48,29 @@ cp -n /var/www/domains/sr/conf/mysql/my.cnf /root/.my.cnf
 # Create logs folder
 mkdir -p /vagrant/sr/logs/
 
-# Install virtualenv
-pip install virtualenv
+# # Install virtualenv
+# pip install virtualenv
 
-# Create virtualenv
-virtualenv --always-copy venv
-# Activate virtualenv
-. venv/bin/activate
-
-# Install pip install -r /path/to/requirements.txt
-pip install -r requirements.txt
+# # Create virtualenv
+# virtualenv --always-copy venv
+# # Activate virtualenv
+# . venv/bin/activate
 
 
-# Create mysql database
-mysql -uroot -e "create database sr"
 
-sudo apt-get install libmysqlclient-dev
+# # Create mysql database
+# mysql -uroot -e "create database sr"
 
-# Dependency for mysqlclient
-sudo apt-get install libapache2-mod-wsgi-py3
+# sudo apt-get install libmysqlclient-dev
 
-# Install mysqlclient
-pip install mysqlclient
+# # Dependency for mysqlclient
+# sudo apt-get install libapache2-mod-wsgi-py3
+
+# # Install mysqlclient
+# pip install mysqlclient
+
+# # Install pip install -r /path/to/requirements.txt
+# pip install -r requirements.txt
 
 # # Create a symlink local settings to vagrant specific setting
 # cd /vagrant/sr
@@ -78,17 +79,17 @@ pip install mysqlclient
 # fi
 # cd /vagrant
 
-# # Install project packages including virtual environment
-# invoke install
+# Install project packages including virtual environment
+invoke install
 
-# # Remove the default Apache config if it exists
-# if [ -a /etc/apache2/sites-enabled/000-default.conf ]; then
-#     rm /etc/apache2/sites-enabled/000-default.conf
-# fi
+# Remove the default Apache config if it exists
+if [ -a /etc/apache2/sites-enabled/000-default.conf ]; then
+    rm /etc/apache2/sites-enabled/000-default.conf
+fi
 
-# # Create a symlink of the apache config if it doesn't exist already
-# if ! [ -L /etc/apache2/sites-enabled/sr-dev.conf ]; then
-#     ln -s /var/www/domains/sr/conf/apache/sr-dev.conf /etc/apache2/sites-enabled/sr-dev.conf
-# fi
+# Create a symlink of the apache config if it doesn't exist already
+if ! [ -L /etc/apache2/sites-enabled/sr-dev.conf ]; then
+    ln -s /var/www/domains/sr/conf/apache/sr-dev.conf /etc/apache2/sites-enabled/sr-dev.conf
+fi
 
 service apache2 restart
