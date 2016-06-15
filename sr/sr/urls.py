@@ -22,3 +22,8 @@ urlpatterns = [
     url(r'^onlineshop/', include('onlineshop.urls')),
     url(r'^api/', include('api.urls')),
 ]
+
+urlpatterns += [
+    url(r'^api-auth/', include('rest_framework.urls',
+                               namespace='rest_framework')),
+]
