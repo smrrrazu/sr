@@ -48,37 +48,7 @@ cp -n /var/www/domains/sr/conf/mysql/my.cnf /root/.my.cnf
 # Create logs folder
 mkdir -p /vagrant/sr/logs/
 
-# # Install virtualenv
-# pip install virtualenv
-
-# # Create virtualenv
-# virtualenv --always-copy venv
-# # Activate virtualenv
-# . venv/bin/activate
-
-
-
-# # Create mysql database
-# mysql -uroot -e "create database sr"
-
-# sudo apt-get install libmysqlclient-dev
-
-# # Dependency for mysqlclient
-# sudo apt-get install libapache2-mod-wsgi-py3
-
-# # Install mysqlclient
-# pip install mysqlclient
-
-# # Install pip install -r /path/to/requirements.txt
-# pip install -r requirements.txt
-
-# # Create a symlink local settings to vagrant specific setting
-# cd /vagrant/sr
-# if ! [ -L local_settings.py ]; then
-#     ln -s local_settings_vagrant.py local_settings.py
-# fi
-# cd /vagrant
-
+pwd
 # Install project packages including virtual environment
 invoke install
 

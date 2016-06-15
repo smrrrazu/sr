@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from invoke import task, run
 
+print("Inside tasks.py")
 
 @task
 def install():
@@ -22,11 +23,15 @@ def install():
     run('mysql -e "CREATE DATABASE IF NOT EXISTS sr CHARACTER SET utf8 COLLATE utf8_unicode_ci"')
 
     # Install, create and activate virtual environment
+    print("Installing virtualen")
+    run("pwd")
     run('pip3 install virtualenv')
-    run('virtualenv -p python3 venv')
+    # run('pip install --upgrade virtualenv')
+    run('virtualenv --always-copy venv')
 
     # Activate virtual env and install required Python packages
     # Needs to to be run together since each run() is a separate process
+
     run('. venv/bin/activate && pip install -r requirements.txt')
 
     # Clean up after installing all Ubuntu packages
@@ -37,5 +42,6 @@ def install():
 
     # Migrate database schema
     run('. venv/bin/activate && cd /var/www/domains/sr/sr')
+    run('python manage.py migrate')
 
     run('python manage.py runserver 0.0.0.0:8000')
