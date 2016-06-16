@@ -1,35 +1,49 @@
 {% extends "base.html" %}
+{% block head_title %}
+    Index | {{ block.super }}
+{% endblock head_title %}
+{% block style %}
+    h1{
+        color:#777
+    }
+{% endblock style %}
+
 {% block content %}
+    
+    
 
     {% if categories %}
     <ul>
-    {% for category in categories %}
-        <li><a href="/onlineshop/{{ category.id }}/">{{ category.name }}</a></li>
-    {% endfor %}
+      {% for category in categories %}
+      <li><a href="/onlineshop/{{ category.id }}/">{{ category.name }}</a></li>
+      {% endfor %}
     </ul>
-{% else %}
+    {% else %}
     <p>No categories are available.</p>
-{% endif %}
+    {% endif %}
 
-    <div ng-app ng-init="categories=['mobile', 'laptop', 'pc']">
-      <label>Name:</label>
-      <input type="text" ng-model="yourName" placeholder="Enter a name here">
-      <hr>
-      {% verbatim %} 
-        <h1>Hello {{yourName}}!</h1>
-        <ul>
-            <li ng-repeat=" cat in categories">{{cat}}</li>
-        </ul>
-      {% endverbatim %}
-
-        
-      
-    </div>
-
-
-
+    {% verbatim %} 
+     
     
+    {% endverbatim %}
+    <div ng-app="myApp" ng-controller="myCtrl">
+
+        <label>Name:</label>
+        <input type="text" ng-model="prodName" placeholder="Find a category">
+        <hr>
+        {% verbatim %} 
+            <h1>You want {{prodName}}!</h1>
+            <ul>
+                <li ng-repeat=" prod in products | filter:prodName ">{{prod.name | uppercase}}( dkk{{prod.price}})--{{prod.category | uppercase}}</li>
+            </ul>
+        {% endverbatim %}
+    </div>
+    
+
+
+   
 {% endblock content %}
+    
 
 
 

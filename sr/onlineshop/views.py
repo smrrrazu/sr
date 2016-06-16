@@ -10,8 +10,13 @@ def index(request):
 
     categories = Category.objects.order_by('-created')[:5]
     template = loader.get_template("onlineshop/index.html")
+    categories_list=[]
+    for cat in categories:
+    	categories_list.append(cat.name)
+
     context = {
-        'categories': categories
+        'categories': categories,
+        'categories_list':categories_list
     }
     return HttpResponse(template.render(context, request))
 
